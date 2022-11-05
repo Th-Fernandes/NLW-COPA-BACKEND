@@ -1,5 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import jwt from "@fastify/jwt";
+
 import { poolRoutes } from "./routes/pool";
 import { userRoutes } from "./routes/user";
 import { guessRoutes } from "./routes/guess";
@@ -15,11 +17,15 @@ async function bootstrap() {
     origin: true,
   });
 
-  fastify.register(poolRoutes);
-  fastify.register(gameRoutes);
-  fastify.register(authRoutes);
-  fastify.register(userRoutes);
-  fastify.register(guessRoutes);
+  await fastify.register(jwt, {
+    secret: "nlwcopa",
+  });
+
+  await fastify.register(poolRoutes);
+  await fastify.register(gameRoutes);
+  await fastify.register(authRoutes);
+  await fastify.register(userRoutes);
+  await fastify.register(guessRoutes);
 
   await fastify.listen({ port: 3333 /*host: "0.0.0.0"*/ });
 }
